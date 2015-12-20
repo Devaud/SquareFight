@@ -4,8 +4,9 @@
 int main()
 {
     sf::RenderWindow window;
-    window.create(sf::VideoMode(800, 600), "Squre fight");
-    
+    window.create(sf::VideoMode(1024, 720), "Square fight");
+    window.setPosition(sf::Vector2i(200, 200)); 
+
     while (window.isOpen())
     {
         sf::Event event;
@@ -15,6 +16,9 @@ int main()
 		window.close();
 	}
     }
+
+    window.clear(sf::Color::Black);
+    window.display();
 
     return 0;
 }
