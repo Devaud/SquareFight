@@ -36,6 +36,16 @@ int Square::getArmor()
     return armor;
 }
 
+sf::Vector2f Square::getSquarePosition()
+{
+    return rect.getPosition();
+}
+
+sf::Vector2f Square::getSquareSize()
+{
+    return size;
+}
+
 void Square::setColor(int r, int g, int b)
 {
     color = sf::Color(r, g, b);
@@ -48,26 +58,35 @@ void Square::setSize(int width, int height)
     rect.setSize(size);
 }
 
+void Square::setSquarePosition(float x, float y)
+{
+    rect.setPosition(sf::Vector2f(x, y));
+}
+
 void Square::keyEvent()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    moving();
+}
+
+void Square::moving()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
     {
         rect.move(-speed, 0);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
     {
         rect.move(speed, 0);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
     {
         rect.move(0, -speed);
     }
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
     {
         rect.move(0, speed);
     }
-
 }
