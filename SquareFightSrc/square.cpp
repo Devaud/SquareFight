@@ -46,6 +46,11 @@ sf::Vector2f Square::getSquareSize()
     return size;
 }
 
+Zonning Square::getZone()
+{
+    return *zone;
+}
+
 void Square::setColor(int r, int g, int b)
 {
     color = sf::Color(r, g, b);
@@ -63,9 +68,19 @@ void Square::setSquarePosition(float x, float y)
     rect.setPosition(sf::Vector2f(x, y));
 }
 
+void Square::setZone(Zonning *zoned)
+{
+    zone = zoned;
+}
+
 void Square::keyEvent()
 {
     moving();
+}
+
+void Square::collided()
+{
+    zonningCollide();   
 }
 
 void Square::moving()
@@ -89,4 +104,19 @@ void Square::moving()
     {
         rect.move(0, speed);
     }
+}
+
+void Square::zonningCollide()
+{
+    if (rect.getPosition().x <= zone->getMinZone().x)
+        rect.setPosition(zone->getMinZone().x, rect.getPosition().y);
+
+    if (rect.getPosition().x + size.x >= zone->getMaxZone().x)
+        rect.setPosition(zone->getMaxZone().x - size.x, rect.getPosition().y);
+
+    if (rect.getPosition().y <= zone->getMinZone().y)
+        rect.setPosition(rect.getPosition().x, zone->getMinZone().y);
+
+    if (rect.getPosition().y + size.y >= zone->getMaxZone().y)
+        rect.setPosition(rect.getPosition().x, zone->getMaxZone().y - size.y); 
 }

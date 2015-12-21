@@ -1,6 +1,8 @@
 #!/bin/bash
 
-g++ -c $1.cpp
+g++ -c main.cpp
+g++ -c square.cpp
+g++ -c zonning.cpp
 echo "Compiled. Library are adding !"
-g++ $1.o -o $2 -lsfml-graphics -lsfml-window -lsfml-system
-echo "You can run $2"
+g++ main.o square.o zonning.o -o SquareFight -lsfml-graphics -lsfml-window -lsfml-system
+echo "You can run SquareFight"

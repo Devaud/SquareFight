@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "zonning.h"
 
 /*
     Author      : Devaud
@@ -22,15 +23,19 @@ public:
     sf::RectangleShape getSquare();
     sf::Vector2f getSquarePosition();
     sf::Vector2f getSquareSize();
-
+    Zonning getZone();
+    
     void setColor(int r, int g, int b);
     void setSize(int width, int height);
     void setSquarePosition(float x, float y);
+    void setZone(Zonning *zone);
 
     void keyEvent();
+    void collided();
 private:
     void initRect();
     void moving();
+    void zonningCollide();
 
     sf::RectangleShape rect;
     sf::Vector2f size;
@@ -38,6 +43,7 @@ private:
     int life;
     int armor;
     float speed;
+    Zonning *zone;
 };
 
 

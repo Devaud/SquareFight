@@ -2,6 +2,7 @@
 #include <SFML/Graphics.hpp>
 
 #include "square.h"
+#include "zonning.h"
 
 int main()
 {
@@ -10,7 +11,8 @@ int main()
     window.setPosition(sf::Vector2i(200, 200)); 
 
     Square sq;
-    float speed;
+    Zonning zone(0, 0, window.getSize().x, window.getSize().y);
+    sq.setZone(&zone);
 
     while (window.isOpen())
     {
@@ -22,28 +24,8 @@ int main()
 	    }
         
         sq.keyEvent();
-       
-        // Colision testing
-        if ((sq.getSquarePosition().x + sq.getSquareSize().x) >= window.getSize().x)
-        {
-            sq.setSquarePosition(window.getSize().x - sq.getSquareSize().x, sq.getSquarePosition().y); 
-        }
-    
-        if (sq.getSquarePosition().x <= 0)
-        {
-            sq.setSquarePosition(0, sq.getSquarePosition().y); 
-        }
-
-        if (sq.getSquarePosition().y <= 0)
-        {
-            sq.setSquarePosition(sq.getSquarePosition().x, 0);
-        }
-
-        if ((sq.getSquarePosition().y + sq.getSquareSize().y) >= window.getSize().y)
-        {
-            sq.setSquarePosition(sq.getSquarePosition().x, window.getSize().y - sq.getSquareSize().y);
-        }
-
+        sq.collided();
+        
         window.clear(sf::Color::Black);
         window.draw(sq.getSquare());
         window.display();
