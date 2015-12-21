@@ -11,6 +11,7 @@ int main()
     {
         sf::Event event;
         while (window.pollEvent(event))
+<<<<<<< HEAD
  	    {
 	        if (event.type == sf::Event::Closed)
 		        window.close();
@@ -22,5 +23,16 @@ int main()
 
     
 
+=======
+ 	{
+	    if (event.type == sf::Event::Closed)
+		window.close();
+	}
+	
+	window.clear(sf::Color::Black);
+	window.display();
+    }
+
+>>>>>>> 2ed5e69185dde54ed90e05c4cfbb4522b2372a48
     return 0;
 }
