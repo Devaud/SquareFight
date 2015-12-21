@@ -15,10 +15,10 @@ int main()
 	    if (event.type == sf::Event::Closed)
 		window.close();
 	}
+	
+	window.clear(sf::Color::Black);
+	window.display();
     }
-
-    window.clear(sf::Color::Black);
-    window.display();
 
     return 0;
 }
