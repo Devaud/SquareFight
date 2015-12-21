@@ -20,7 +20,9 @@ int main()
 	        if (event.type == sf::Event::Closed)
 		        window.close();
 	    }
-        speed = sq.getSpeed();             
+        
+        sq.keyEvent();
+
         window.clear(sf::Color::Black);
         window.draw(sq.getSquare());
         window.display();

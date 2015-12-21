@@ -47,3 +47,27 @@ void Square::setSize(int width, int height)
     size = sf::Vector2f(width, height);
     rect.setSize(size);
 }
+
+void Square::keyEvent()
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        rect.move(-speed, 0);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        rect.move(speed, 0);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        rect.move(0, -speed);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        rect.move(0, speed);
+    }
+
+}

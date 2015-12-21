@@ -2,6 +2,7 @@
 #define SQUARE_H
 
 #include <SFML/Graphics.hpp>
+#include <SFML/Window.hpp>
 
 class Square
 {
@@ -13,6 +14,7 @@ public:
     sf::RectangleShape getSquare();
     void setColor(int r, int g, int b);
     void setSize(int width, int height);
+    void keyEvent();
 private:
     void initRect();
     sf::RectangleShape rect;
