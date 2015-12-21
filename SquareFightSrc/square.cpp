@@ -2,18 +2,18 @@
 
 Square::Square()
 {
-    color = sf::Color(100, 250, 50);
-    size = sf::Vector2f(50, 50);
-    life = 100;
-    armor = 100;
-    speed = 0.5f;
+    color = sf::Color(DEFAULT_COLOR);
+    size = sf::Vector2f(DEFAULT_SIZE);
+    life = DEFAULT_LIFE;
+    armor = DEFAULT_ARMOR;
+    speed = DEFAULT_SPEED;
     initRect();
 }
 
 void Square::initRect()
 {
     rect.setSize(size);
-    rect.setFillColor(sf::Color(100, 250, 50));
+    rect.setFillColor(color);
 }
 
 sf::RectangleShape Square::getSquare()

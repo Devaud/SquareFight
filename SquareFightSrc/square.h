@@ -5,6 +5,11 @@
 #include <SFML/Window.hpp>
 #include "zonning.h"
 
+#define DEFAULT_SPEED 0.5f
+#define DEFAULT_LIFE 100
+#define DEFAULT_ARMOR 100
+#define DEFAULT_SIZE 50, 50
+#define DEFAULT_COLOR 100, 250, 50
 /*
     Author      : Devaud
     Description : Square class contains all square's  data and logical
