@@ -19,6 +19,7 @@ int main()
 
     // Create bullet
     Bullet b(sf::Vector2f(HORIZONTAL_SHOOT));
+    b.setZone(&zone);
     
     while (window.isOpen())
     {
@@ -53,8 +54,7 @@ int main()
             b.setPosition(sq.getSquarePosition().x, sq.getSquarePosition().y + sq.getSquareSize().y / 2 - b.getSize().y / 2);
         }
         sq.keyEvent();
-        sq.collided();
-
+        
         b.moving();
         
         window.clear(sf::Color::Black);

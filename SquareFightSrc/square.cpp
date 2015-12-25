@@ -104,6 +104,9 @@ void Square::moving()
     {
         rect.move(0, speed);
     }
+
+    if (zone != NULL)
+        zonningCollide();
 }
 
 void Square::zonningCollide()

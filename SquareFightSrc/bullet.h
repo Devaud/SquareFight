@@ -3,6 +3,7 @@
 
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
+#include "zonning.h"
 
 #define VERTICAL_SHOOT 10, 20
 #define HORIZONTAL_SHOOT 20, 10
@@ -31,6 +32,7 @@ public:
     int getDamage();
     sf::Vector2f getSpeed();
     int getDirection();
+    Zonning getZone();
 
     void setDamage(int dam);
     void setColor(int r, int g, int b);
@@ -38,11 +40,13 @@ public:
     void setPosition(float x, float y);
     void setSize(sf::Vector2f si);
     void setDirection(int dir);
+    void setZone(Zonning *zoned);
 
     void moving();
     void changeDirection(int dir);
 private:
     void initRect();
+    void zonningCollide();
 
     sf::RectangleShape rect;
     sf::Vector2f size;
@@ -50,6 +54,7 @@ private:
     sf::Vector2f speed;
     int damage;
     int direction;
+    Zonning *zone;
 
 };
 

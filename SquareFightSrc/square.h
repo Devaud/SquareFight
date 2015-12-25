@@ -36,11 +36,12 @@ public:
     void setZone(Zonning *zone);
 
     void keyEvent();
-    void collided();
+
 private:
     void initRect();
     void moving();
     void zonningCollide();
+    void collided();
 
     sf::RectangleShape rect;
     sf::Vector2f size;
