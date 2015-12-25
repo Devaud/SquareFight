@@ -5,6 +5,8 @@
 #include "zonning.h"
 #include "bullet.h"
 
+void bulletEvent(Bullet *b, Square sq);
+
 int main()
 {
     sf::RenderWindow window;
@@ -29,30 +31,8 @@ int main()
 	        if (event.type == sf::Event::Closed)
 		        window.close();
 	    }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
-        {
-            b.changeDirection(RIGHT_DIRECTION);
-            b.setPosition(sq.getSquarePosition().x + sq.getSquareSize().x - b.getSize().x, sq.getSquarePosition().y + sq.getSquareSize().y / 2 - b.getSize().y / 2);
-        }
-
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
-        {
-            b.changeDirection(UP_DIRECTION);
-            b.setPosition(sq.getSquarePosition().x + sq.getSquareSize().x / 2 - b.getSize().x / 2, sq.getSquarePosition().y);
-        }
-       
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
-        {
-            b.changeDirection(DOWN_DIRECTION); 
-            b.setPosition(sq.getSquarePosition().x + sq.getSquareSize().x / 2 - b.getSize().x / 2, sq.getSquarePosition().y + sq.getSquareSize().y - b.getSize().y);
-        }
-        
-        if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
-        {
-            b.changeDirection(LEFT_DIRECTION); 
-            b.setPosition(sq.getSquarePosition().x, sq.getSquarePosition().y + sq.getSquareSize().y / 2 - b.getSize().y / 2);
-        }
+ 
+        bulletEvent(&b, sq);
         sq.keyEvent();
         
         b.moving();
@@ -64,4 +44,31 @@ int main()
     }
 
     return 0;
+}
+
+void bulletEvent(Bullet *b, Square sq)
+{
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Right))
+    {
+        b->changeDirection(RIGHT_DIRECTION);
+        b->setPosition(sq.getSquarePosition().x + sq.getSquareSize().x - b->getSize().x, sq.getSquarePosition().y + sq.getSquareSize().y / 2 - b->getSize().y / 2);
+    }
+
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Up))
+    {
+        b->changeDirection(UP_DIRECTION);
+        b->setPosition(sq.getSquarePosition().x + sq.getSquareSize().x / 2 - b->getSize().x / 2, sq.getSquarePosition().y);
+    }
+       
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Down))
+    {
+        b->changeDirection(DOWN_DIRECTION); 
+        b->setPosition(sq.getSquarePosition().x + sq.getSquareSize().x / 2 - b->getSize().x / 2, sq.getSquarePosition().y + sq.getSquareSize().y - b->getSize().y);
+    }
+        
+    if (sf::Keyboard::isKeyPressed(sf::Keyboard::Left))
+    {
+        b->changeDirection(LEFT_DIRECTION); 
+        b->setPosition(sq.getSquarePosition().x, sq.getSquarePosition().y + sq.getSquareSize().y / 2 - b->getSize().y / 2);
+    }
 }
