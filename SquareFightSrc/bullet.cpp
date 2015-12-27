@@ -165,3 +165,9 @@ void Bullet::moving()
     if (zone != NULL)
         outZone = zonningCollide();
 }
+
+void Bullet::hitted(Square *sq)
+{
+    if (rect.getPosition().x >= sq->getSquarePosition().x && rect.getPosition().x <= sq->getSquarePosition().x + sq->getSquareSize().x && rect.getPosition().y >= sq->getSquarePosition().y && rect.getPosition().y <= sq->getSquarePosition().y + sq->getSquareSize().y)
+    sq->setColor(255, 255, 255);
+}

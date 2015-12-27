@@ -19,6 +19,7 @@ int main()
     sf::Keyboard::Key currentPressedKey = sf::Keyboard::F15;
     // Create square
     Square sq;
+    Square sq2;
 
     // Create zone
     Zonning zone(0, 0, window.getSize().x, window.getSize().y);
@@ -40,12 +41,15 @@ int main()
         bullets.remove_if(isRemoving);
 
         for (std::list<Bullet>::iterator bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
+        {
             bulletIt->moving();
-
+            bulletIt->hitted(&sq2);
+        }
         window.clear(sf::Color::Black);
         for (std::list<Bullet>::iterator bulletIt = bullets.begin(); bulletIt != bullets.end(); bulletIt++)
             window.draw(bulletIt->getBullet());
         window.draw(sq.getSquare());
+        window.draw(sq2.getSquare());
         window.display();
     }
 

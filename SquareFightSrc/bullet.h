@@ -4,6 +4,7 @@
 #include <SFML/Graphics.hpp>
 #include <SFML/Window.hpp>
 #include "zonning.h"
+#include "square.h"
 
 #define VERTICAL_SHOOT 10, 20
 #define HORIZONTAL_SHOOT 20, 10
@@ -46,6 +47,7 @@ public:
 
     void moving();
     void changeDirection(int dir);
+    void hitted(Square *sq);
 private:
     void initRect();
     bool zonningCollide();
