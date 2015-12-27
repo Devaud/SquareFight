@@ -18,8 +18,17 @@ Bullet::Bullet(sf::Vector2f mSize)
     initRect();
 }
 
+Bullet::Bullet(int dir, Zonning *zoned)
+{
+    color = sf::Color(255, 255, 56);
+    zone = zoned;
+    initRect();
+    changeDirection(dir);
+}
+
 void Bullet::initRect()
 {
+    outZone = false;
     direction = 1;
     rect.setSize(size);
     rect.setFillColor(color);
@@ -58,6 +67,11 @@ int Bullet::getDirection()
 Zonning Bullet::getZone()
 {
     return *zone;
+}
+
+bool Bullet::getOutZone()
+{
+    return outZone;
 }
 
 void Bullet::setDamage(int dam)
@@ -126,20 +140,21 @@ void Bullet::changeDirection(int dir)
     }
 }
 
-void Bullet::zonningCollide()
+bool Bullet::zonningCollide()
 {
     if (rect.getPosition().x <= zone->getMinZone().x)
-        rect.setPosition(zone->getMinZone().x, rect.getPosition().y);
+        return true;
 
     if (rect.getPosition().x + size.x >= zone->getMaxZone().x)
-        rect.setPosition(zone->getMaxZone().x - size.x, rect.getPosition().y);
+        return true;
 
     if (rect.getPosition().y <= zone->getMinZone().y)
-        rect.setPosition(rect.getPosition().x, zone->getMinZone().y);
+        return true;
 
     if (rect.getPosition().y + size.y >= zone->getMaxZone().y)
-        rect.setPosition(rect.getPosition().x, zone->getMaxZone().y - size.y);
+        return true;
 
+    return false;
 
 }
 
@@ -148,5 +163,5 @@ void Bullet::moving()
     rect.move(speed.x, speed.y);
 
     if (zone != NULL)
-        zonningCollide();
+        outZone = zonningCollide();
 }

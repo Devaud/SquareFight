@@ -25,6 +25,7 @@ class Bullet
 public:
     Bullet();
     Bullet(sf::Vector2f size);
+    Bullet(int dir, Zonning *zoned);
 
     sf::RectangleShape getBullet();
     sf::Vector2f getSize();
@@ -33,6 +34,7 @@ public:
     sf::Vector2f getSpeed();
     int getDirection();
     Zonning getZone();
+    bool getOutZone();
 
     void setDamage(int dam);
     void setColor(int r, int g, int b);
@@ -46,12 +48,13 @@ public:
     void changeDirection(int dir);
 private:
     void initRect();
-    void zonningCollide();
+    bool zonningCollide();
 
     sf::RectangleShape rect;
     sf::Vector2f size;
     sf::Color color;
     sf::Vector2f speed;
+    bool outZone;
     int damage;
     int direction;
     Zonning *zone;
