@@ -1,125 +1,167 @@
 #include "square.h"
 
-Square::Square()
+Square::Square() : Square(true)
 {
-    color = sf::Color(DEFAULT_COLOR);
-    size = sf::Vector2f(DEFAULT_SIZE);
-    life = DEFAULT_LIFE;
-    armor = DEFAULT_ARMOR;
-    speed = DEFAULT_SPEED;
-    initRect();
+
 }
 
-void Square::initRect()
+Square::Square(bool showLifebar)
 {
-    rect.setSize(size);
-    rect.setFillColor(color);
+	this->rect.setSize(sf::Vector2f(DEFAULT_SIZE));
+	this->rect.setFillColor(sf::Color(DEFAULT_COLOR));
+	this->life = DEFAULT_LIFE;
+	this->armor = DEFAULT_ARMOR;
+	this->speed = DEFAULT_SPEED;
+	this->showLifebar = showLifebar;
+	this->alive = true;
 }
+
+
 
 sf::RectangleShape Square::getSquare()
 {
-    return rect;
+	return this->rect;
 }
 
 float Square::getSpeed()
 {
-    return speed;
+	return this->speed;
 }
 
 int Square::getLife()
 {
-    return life;
+	return this->life;
 }
 
 int Square::getArmor()
 {
-    return armor;
+	return this->armor;
 }
 
 sf::Vector2f Square::getSquarePosition()
 {
-    return rect.getPosition();
+	return this->rect.getPosition();
 }
 
 sf::Vector2f Square::getSquareSize()
 {
-    return size;
+	return this->rect.getSize();
 }
 
 Zonning Square::getZone()
 {
-    return *zone;
+	return *zone;
+}
+
+sf::Color Square::getColor()
+{
+	return this->rect.getFillColor();
 }
 
 void Square::setColor(int r, int g, int b)
 {
-    color = sf::Color(r, g, b);
-    rect.setFillColor(color);
+	this->rect.setFillColor(sf::Color(r, g, b));
 }
 
 void Square::setSize(int width, int height)
 {
-    size = sf::Vector2f(width, height);
-    rect.setSize(size);
+	this->rect.setSize(sf::Vector2f((float)width, (float)height));
 }
 
 void Square::setSquarePosition(float x, float y)
 {
-    rect.setPosition(sf::Vector2f(x, y));
+	this->rect.setPosition(sf::Vector2f(x, y));
+	this->lb.setPosition(this->getSquarePosition());
 }
 
 void Square::setZone(Zonning *zoned)
 {
-    zone = zoned;
+	this->zone = zoned;
 }
 
 void Square::keyEvent()
 {
-    moving();
+	this->moving();
 }
 
 void Square::collided()
 {
-    zonningCollide();   
+	this->zonningCollide();
 }
 
 void Square::moving()
 {
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
-    {
-        rect.move(-speed, 0);
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::A))
+	{
+		this->rect.move(-speed, 0);
+	}
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
-    {
-        rect.move(speed, 0);
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::D))
+	{
+		this->rect.move(speed, 0);
+	}
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
-    {
-        rect.move(0, -speed);
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::W))
+	{
+		this->rect.move(0, -speed);
+	}
 
-    if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
-    {
-        rect.move(0, speed);
-    }
+	if (sf::Keyboard::isKeyPressed(sf::Keyboard::S))
+	{
+		this->rect.move(0, speed);
+	}
 
-    if (zone != NULL)
-        zonningCollide();
+	if (this->zone != NULL)
+		this->zonningCollide();
+
+	this->lb.setPosition(this->getSquarePosition());
+}
+
+void Square::attacked(int damage)
+{
+	int damageWithArmor = damage - this->getArmor();
+
+	if (damageWithArmor > 0)
+	{
+		this->life -= (damage - this->getArmor());
+		this->lb.setCurrentlyLife(this->life);
+		if (!this->isAlive())
+			this->alive = false;
+	}
+}
+
+void Square::draw(sf::RenderWindow *win)
+{
+	win->draw(this->rect);
+
+	if (this->showLifebar)
+		this->lb.draw(win);
 }
 
 void Square::zonningCollide()
 {
-    if (rect.getPosition().x <= zone->getMinZone().x)
-        rect.setPosition(zone->getMinZone().x, rect.getPosition().y);
+	int borderThickness = (this->showLifebar) ? BORDER_THICKNESS : 0;
+	int spacing = (this->showLifebar) ? SPACING : 0;
+	sf::Vector2f lbSize = (this->showLifebar) ? this->lb.getSize() : sf::Vector2f(0, 0);
 
-    if (rect.getPosition().x + size.x >= zone->getMaxZone().x)
-        rect.setPosition(zone->getMaxZone().x - size.x, rect.getPosition().y);
+	if (this->rect.getPosition().x - borderThickness <= this->zone->getMinZone().x)
+		this->rect.setPosition(this->zone->getMinZone().x + borderThickness, this->rect.getPosition().y);
 
-    if (rect.getPosition().y <= zone->getMinZone().y)
-        rect.setPosition(rect.getPosition().x, zone->getMinZone().y);
+	if (this->rect.getPosition().x + this->getSquareSize().x + borderThickness >= this->zone->getMaxZone().x)
+		this->rect.setPosition(this->zone->getMaxZone().x - this->getSquareSize().x - borderThickness, this->rect.getPosition().y);
 
-    if (rect.getPosition().y + size.y >= zone->getMaxZone().y)
-        rect.setPosition(rect.getPosition().x, zone->getMaxZone().y - size.y); 
+	if (this->rect.getPosition().y - lbSize.y - spacing <= this->zone->getMinZone().y)
+		this->rect.setPosition(this->rect.getPosition().x, this->zone->getMinZone().y + lbSize.y + spacing);
+
+	if (this->rect.getPosition().y + this->getSquareSize().y >= this->zone->getMaxZone().y)
+		this->rect.setPosition(this->rect.getPosition().x, this->zone->getMaxZone().y - this->getSquareSize().y);
+
+}
+
+bool Square::isAlive()
+{
+	if (this->life <= 0)
+		return false;
+	else
+		return true;
 }

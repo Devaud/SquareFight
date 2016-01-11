@@ -1,173 +1,160 @@
 #include "bullet.h"
 
-Bullet::Bullet()
+Bullet::Bullet() : Bullet(START_BULLET_DIR, &Zonning(0, 0, 10, 10), sf::Color(BULLET_COLOR))
 {
-    color = sf::Color(255, 255, 56);
-    size = sf::Vector2f(10, 20);
-    speed = sf::Vector2f(0, 0);
-    zone = NULL;
-    initRect();
+
 }
 
-Bullet::Bullet(sf::Vector2f mSize)
+Bullet::Bullet(int dir, Zonning *zoned, sf::Color mColor)
 {
-    color = sf::Color(255, 255, 56);
-    size = mSize;
-    speed = sf::Vector2f(0,0);
-    zone = NULL;
-    initRect();
-}
-
-Bullet::Bullet(int dir, Zonning *zoned)
-{
-    color = sf::Color(255, 255, 56);
-    zone = zoned;
-    initRect();
-    changeDirection(dir);
-}
-
-void Bullet::initRect()
-{
-    outZone = false;
-    direction = 1;
-    rect.setSize(size);
-    rect.setFillColor(color);
+	this->setColor(mColor);
+	this->zone = zoned;
+	this->direction = dir;
+	this->setSize(sf::Vector2f(BULLET_SIZE));
+	this->outZone = false;
+	this->damage = DEFAULT_DAMAGE;
+	this->changeDirection(dir);
 }
 
 sf::RectangleShape Bullet::getBullet()
 {
-    return rect;
+	return this->rect;
 }
 
 sf::Vector2f Bullet::getSize()
 {
-    return size;
+	return this->rect.getSize();
 }
 
 sf::Color Bullet::getColor()
 {
-    return color;
+	return this->rect.getFillColor();
 }
 
 int Bullet::getDamage()
 {
-    return damage;
+	return this->damage;
 }
 
 sf::Vector2f Bullet::getSpeed()
 {
-    return speed;
+	return this->speed;
 }
 
 int Bullet::getDirection()
 {
-    return direction;
+	return this->direction;
 }
 
 Zonning Bullet::getZone()
 {
-    return *zone;
+	return *zone;
 }
 
 bool Bullet::getOutZone()
 {
-    return outZone;
+	return this->outZone;
 }
 
 void Bullet::setDamage(int dam)
 {
-    damage = dam;
+	this->damage = dam;
 }
 
-void Bullet::setColor(int r, int g, int b)
+void Bullet::setColor(sf::Color mColor)
 {
-    color = sf::Color(r, g, b);
-    rect.setFillColor(color);
+	this->rect.setFillColor(mColor);
 }
 
 void Bullet::setSpeed(sf::Vector2f sp)
 {
-    speed = sp;
+	this->speed = sp;
 }
 
 void Bullet::setPosition(float x, float y)
 {
-    rect.setPosition(x, y);   
+	this->rect.setPosition(x, y);
 }
 
 void Bullet::setSize(sf::Vector2f si)
 {
-    size = si;
-    rect.setSize(size);
+	this->rect.setSize(si);
 }
 
 void Bullet::setDirection(int dir)
 {
-    direction = dir;
+	this->direction = dir;
 }
 
 void Bullet::setZone(Zonning *zoned)
 {
-    zone = zoned;    
+	this->zone = zoned;
 }
 
 void Bullet::changeDirection(int dir)
 {
-    setDirection(dir);
-    switch (dir)
-    {
-        case 1 :
-            speed = sf::Vector2f(0, -SPEED);
-            setSize(sf::Vector2f(VERTICAL_SHOOT));
-            break;
-        case 2 :
-            speed = sf::Vector2f(SPEED, 0);
-            setSize(sf::Vector2f(HORIZONTAL_SHOOT));
-            break;
-        case 3 :
-            speed = sf::Vector2f(0, SPEED);
-            setSize(sf::Vector2f(VERTICAL_SHOOT));
-            break;
-        case 4 :
-            speed = sf::Vector2f(-SPEED, 0);
-            setSize(sf::Vector2f(HORIZONTAL_SHOOT));
-            break;
-        default:
-            speed = sf::Vector2f(0, 0);
-            setSize(sf::Vector2f(10, 10));
-            setColor(255, 0, 0);
-            break;
-    }
+	this->setDirection(dir);
+	switch (dir)
+	{
+	case 1:
+		this->speed = sf::Vector2f(0, -SPEED);
+		this->setSize(sf::Vector2f(VERTICAL_SHOOT));
+		break;
+	case 2:
+		this->speed = sf::Vector2f(SPEED, 0);
+		this->setSize(sf::Vector2f(HORIZONTAL_SHOOT));
+		break;
+	case 3:
+		this->speed = sf::Vector2f(0, SPEED);
+		this->setSize(sf::Vector2f(VERTICAL_SHOOT));
+		break;
+	case 4:
+		this->speed = sf::Vector2f(-SPEED, 0);
+		this->setSize(sf::Vector2f(HORIZONTAL_SHOOT));
+		break;
+	default:
+		this->speed = sf::Vector2f(0, 0);
+		this->setSize(sf::Vector2f(10, 10));
+		this->setColor(sf::Color(255, 0, 0));
+		break;
+	}
+}
+void Bullet::draw(sf::RenderWindow *win)
+{
+	win->draw(this->rect);
 }
 
 bool Bullet::zonningCollide()
 {
-    if (rect.getPosition().x <= zone->getMinZone().x)
-        return true;
+	if (this->rect.getPosition().x <= this->zone->getMinZone().x)
+		return true;
 
-    if (rect.getPosition().x + size.x >= zone->getMaxZone().x)
-        return true;
+	if (this->rect.getPosition().x + this->getSize().x >= this->zone->getMaxZone().x)
+		return true;
 
-    if (rect.getPosition().y <= zone->getMinZone().y)
-        return true;
+	if (this->rect.getPosition().y <= this->zone->getMinZone().y)
+		return true;
 
-    if (rect.getPosition().y + size.y >= zone->getMaxZone().y)
-        return true;
+	if (this->rect.getPosition().y + this->getSize().y >= this->zone->getMaxZone().y)
+		return true;
 
-    return false;
+	return false;
 
 }
 
 void Bullet::moving()
 {
-    rect.move(speed.x, speed.y);
+	this->rect.move(speed.x, speed.y);
 
-    if (zone != NULL)
-        outZone = zonningCollide();
+	if (this->zone != NULL)
+		this->outZone = this->zonningCollide();
 }
 
 void Bullet::hitted(Square *sq)
 {
-    if (rect.getPosition().x >= sq->getSquarePosition().x && rect.getPosition().x <= sq->getSquarePosition().x + sq->getSquareSize().x && rect.getPosition().y >= sq->getSquarePosition().y && rect.getPosition().y <= sq->getSquarePosition().y + sq->getSquareSize().y)
-    sq->setColor(255, 255, 255);
+	if (this->rect.getPosition().x >= sq->getSquarePosition().x && this->rect.getPosition().x <= sq->getSquarePosition().x + sq->getSquareSize().x && this->rect.getPosition().y >= sq->getSquarePosition().y && this->rect.getPosition().y <= sq->getSquarePosition().y + sq->getSquareSize().y)
+	{
+		sq->attacked(this->damage);
+		this->outZone = true;
+	}
 }
